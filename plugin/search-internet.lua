@@ -1,1 +1,1 @@
-print("my plug running from plugin vim")
+-- @todo what do people put here?

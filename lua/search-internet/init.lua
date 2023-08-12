@@ -6,40 +6,50 @@ local os_to_cmd = {
   darwin = "open",
 }
 
--- @TODO set a default somewhere perhaps a `settings` variable or something
-local engines = {
-  ddg = "https://duckduckgo.com"
-}
-
--- @TODO: get this form some place
-local determined_os = "darwin"
-
-local browse = function(url)
-  local cmd = os_to_cmd[determined_os]
-  -- local cmd = 'echo'
-  vim.fn.jobstart({ cmd, url }, {
-    on_stdout = function(j, d, e)
-      P('xhere')
-      P(d)
-      P(e)
-    end
-  })
+local urlEncode = function(s)
+  -- @todo make this work more good
+  return string.gsub(s, ' ', '+')
 end
 
 
--- @TODO:
---  1 ~come up with order of precedence perhaps something like:~
---    instead of order of precedence, the function should take a search term
---    and then do the search.
---    the settinsgs should figure out what the term is
---      visual selected
---      word under curosr
---      clipboard
---      etc
---  2 create url encoded string from query stuff
---    each engine would have to follow some interface or something
---  3 pass that url into the `browse` function
---  4 profit
-local M = { browse = browse }
+-- @TODO set a default somewhere perhaps a `settings` variable or something
+local engines = {
+  ddg = {
+    addr = "https://duckduckgo.com",
+    qs = function(s)
+      local ready = urlEncode(s)
+      return table.concat({ '/', '?q=', ready })
+    end
+  }
+}
+
+local determined_os = string.lower(vim.loop.os_uname().sysname)
+-- @TODO: get this from some place
+local determined_eng = engines.ddg
+
+-- [[ User Facing Interface ]]
+local browse = function(input)
+  local cmd = os_to_cmd[determined_os]
+  local actualUrl = determined_eng.addr .. determined_eng.qs(input)
+
+  -- what are the failure modes here?
+  vim.fn.jobstart({ cmd, actualUrl })
+end
+
+local word_under_cursor = function()
+  local input = vim.fn.expand("<cword>")
+  browse(input)
+end
+
+local selection = function()
+  local input = vim.fn.getreg("*")
+  browse(input)
+end
+
+local M = {
+  browse = browse,
+  word_under_cursor = word_under_cursor,
+  selection = selection
+}
 
 return M
