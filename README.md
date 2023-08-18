@@ -1,7 +1,7 @@
 search-internet
 ===============
 
-Search the internet for "thing"
+Launches a browser and navigates to a search engine passing in search terms from a selection
 
 ## Installation
 

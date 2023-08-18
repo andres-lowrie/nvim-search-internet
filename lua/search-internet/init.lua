@@ -1,6 +1,37 @@
+---@mod intro Introduction
+---@brief [[
+---
+--- Launches a browser and navigates to a search engine passing in search terms from the register
+---@brief ]]
+---
+---
+---@mod install Installation
+---
+---@brief [[
+--- By design this plugin does not create any keymaps instead it just defines
+--- functions that you can bind keymaps to. The following are some examples
+--- you can use for different plugin managers
+---@brief ]]
+---
+---@tag lazy
+---@brief [[
+--->
+--- {
+---   'andres-lowrie/nvim-search-internet',
+---   config = function()
+---     -- Bind the functions as you see fit
+---     vim.keymap.set({ 'n' }, '<Leader>si', require('search-internet').selection)
+---     vim.keymap.set({ 'n' }, '<Leader>sw', require('search-internet').word_under_cursor)
+---   end
+--- }
+---<
+---@brief ]]
+
+---
 -- Figure out which os I'm in
 -- call command to open the browser with some path
 local P = require('for_deving').P
+
 
 local os_to_cmd = {
   darwin = "open",

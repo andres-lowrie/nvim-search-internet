@@ -1,2 +1,26 @@
-================================================================================
-INTRODUCTION                                                    *search-internet*
+==============================================================================
+Introduction                                                             *intro*
+
+
+ Launches a browser and navigates to a search engine passing in search terms from the register
+
+==============================================================================
+Installation                                                           *install*
+
+ By design this plugin does not create any keymaps instead it just defines
+ functions that you can bind keymaps to. The following are some examples
+ you can use for different plugin managers
+
+                                                                          *lazy*
+>
+ {
+   'andres-lowrie/nvim-search-internet',
+   config = function()
+     -- Bind the functions as you see fit
+     vim.keymap.set({ 'n' }, '<Leader>si', require('search-internet').selection)
+     vim.keymap.set({ 'n' }, '<Leader>sw', require('search-internet').word_under_cursor)
+   end
+ }
+<
+
+vim:tw=78:ts=8:noet:ft=help:norl:
